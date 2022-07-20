@@ -29,7 +29,7 @@ function App() {
   return (
     <div className='ui container'>
       <Router>
-        {/* <Header /> */}
+        <Header />
         <Routes>
         <Route path="/" element={
          <ContactList contacts={contacts} getContactId={removeContactHandler}/>
@@ -39,7 +39,7 @@ function App() {
         }/>
         </Routes>
         </Router>
-      {/* simple one page component render */}
+         {/* simple one page component render */}
       {/* <Header />
       <AddContact addContactHandler={addContactHandler}/>
       <ContactList contacts={contacts} getContactId={removeContactHandler}/> */}
