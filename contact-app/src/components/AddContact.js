@@ -6,9 +6,9 @@ class AddContact extends React.Component{
         name: "",
         email: ""
     };
-    
     add=(e)=>{
         e.preventDefault();
+        let navigate = useNavigate();
         if(this.state.name === "" || this.state.email === ""){
             alert("All the fields are mandatory!");
             return;
@@ -16,9 +16,8 @@ class AddContact extends React.Component{
         this.props.addContactHandler(this.state);
         this.setState({name: "", email: ""})
         console.log("props",this.props);
-        let navigate = useNavigate();
         //navigate("/", { replace: true });
-        //navigate("/")
+        this.props.navigate('/');
     }
 
     render(){
