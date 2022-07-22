@@ -3,16 +3,20 @@ import { useNavigate } from "react-router-dom";
 
 const AddContact=(props)=>{
 
-    const [state, setState]=useState({name: "",email: ""});
+    const [name, setName]=useState("");
+    const [email, setEmail]=useState("");
+
     let navigate = useNavigate();
     const add=(e)=>{
         e.preventDefault();
-        if(state.name === "" || state.email === ""){
+        if(name === "" || email === ""){
             alert("All the fields are mandatory!");
             return;
         }
+        const state={name, email}
         props.addContactHandler(state);
-        setState({name: "", email: ""})
+        setName("")
+        setEmail("")
         console.log("props",props);
         navigate("/")
     };
@@ -22,11 +26,11 @@ const AddContact=(props)=>{
             <form className='ui form' onSubmit={add}>
                 <div className='field'>
                     <label>Name</label>
-                    <input type="text" name="name" placeholder="Name" value={state.name} onChange={(e)=>setState({name: e.target.value})}></input>
+                    <input type="text" name="name" placeholder="Name" value={name} onChange={(e)=>setName(e.target.value)}></input>
                 </div>
                 <div className='field'>
                     <label>Email</label>
-                    <input type="text" name="email" placeholder="Email" value={state.email} onChange={(e)=>setState({email: e.target.value})}></input>
+                    <input type="text" name="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)}></input>
                 </div>
                 <button className='ui button blue'>Add</button>
             </form>

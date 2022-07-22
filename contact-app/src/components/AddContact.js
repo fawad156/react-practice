@@ -17,7 +17,7 @@ class AddContact extends React.Component{
         this.setState({name: "", email: ""})
         console.log("props",this.props);
         //navigate("/", { replace: true });
-        this.props.navigate('/');
+        //this.props.navigate('/');
     }
 
     render(){
