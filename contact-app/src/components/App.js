@@ -18,6 +18,8 @@ function App() {
   };
 
   const [contacts, setContacts]=useState([]);
+  const [searchTerm, setSearchTerm]=useState("");
+  const [searchResults, setSearchResults]=useState([]);
 
   useEffect(()=>{
     const getAllContacts=async()=>{
@@ -55,6 +57,19 @@ function App() {
     })
     setContacts(newContactList)
   }
+
+  const searchHandler=(searchTerm)=>{
+    setSearchTerm(searchTerm);
+    if (searchTerm != ""){
+      const newContactList=contacts.filter((contact)=>{
+        return Object.values(contact).join(" ").toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
+      });
+     setSearchResults(newContactList)
+    }
+    else{
+      setSearchResults(contacts);
+    }
+  };
  
   return (
     <div className='ui container'>
@@ -62,7 +77,7 @@ function App() {
         <Header />
         <Routes>
         <Route path="/" element={
-         <ContactList contacts={contacts} getContactId={removeContactHandler}/>
+         <ContactList contacts={searchTerm.length < 1 ? contacts : searchResults} getContactId={removeContactHandler} term={searchTerm} searchKeyword={searchHandler}/>
         }/>
         <Route path="/add" element={
           <AddContact addContactHandler={addContactHandler}/>
