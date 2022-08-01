@@ -1,9 +1,12 @@
-import React,{useRef} from 'react';
+import React,{useRef, useContext} from 'react';
 import {Link} from 'react-router-dom';
 import ContactCard from './ContactCard';
+import ContactContext from "../contexts/ContactContext";
 
 const ContactList=(props)=>{
     console.log("props",props);
+    const {contacts}  = useContext(ContactContext);
+    console.log("Context contacts => ", contacts);
     const inputEl=useRef("");
 
     const deleteContactHandler=(id)=>{

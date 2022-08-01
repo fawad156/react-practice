@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {BrowserRouter as Router, Routes ,Route} from 'react-router-dom';
 import { v4 as uuid } from "uuid";
 import './App.css';
@@ -9,7 +9,7 @@ import ContactList from './ContactList';
 import ContactDetails from './ContactDetails';
 import EditContact from './EditContact';
 import api from "../api/contact";
-
+import ContactContext from "../contexts/ContactContext";
 function App() {
 
   const retrieveContacts=async()=>{
@@ -17,10 +17,11 @@ function App() {
     return response.data;
   };
 
+  
   const [contacts, setContacts]=useState([]);
   const [searchTerm, setSearchTerm]=useState("");
   const [searchResults, setSearchResults]=useState([]);
-
+  
   useEffect(()=>{
     const getAllContacts=async()=>{
       const allContacts= await retrieveContacts();
@@ -73,6 +74,7 @@ function App() {
  
   return (
     <div className='ui container'>
+      <ContactContext.Provider value={{contacts, setContacts}}>
       <Router>
         <Header />
         <Routes>
@@ -92,7 +94,9 @@ function App() {
       {/* <Header />
       <AddContact addContactHandler={addContactHandler}/>
       <ContactList contacts={contacts} getContactId={removeContactHandler}/> */}
+      </ContactContext.Provider>
     </div>
+    
   );
 }
 
