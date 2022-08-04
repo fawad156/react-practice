@@ -74,7 +74,7 @@ function App() {
  
   return (
     <div className='ui container'>
-      <ContactContext.Provider value={{contacts, setContacts}}>
+      <ContactContext.Provider value={{contacts, setContacts, searchResults, setSearchResults}}>
       <Router>
         <Header />
         <Routes>

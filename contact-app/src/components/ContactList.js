@@ -5,7 +5,7 @@ import ContactContext from "../contexts/ContactContext";
 
 const ContactList=(props)=>{
     console.log("props",props);
-    const {contacts}  = useContext(ContactContext);
+    const {contacts, setContacts, searchResults, setSearchResults}  = useContext(ContactContext);
     console.log("Context contacts => ", contacts);
     const inputEl=useRef("");
 
@@ -13,13 +13,26 @@ const ContactList=(props)=>{
         props.getContactId(id)
     };
 
-    const renderContactList=props.contacts.map((contact)=>{
+    const renderContactList= searchResults.map((contact)=>{
         return(
-            <ContactCard contact={contact} clickHandler={deleteContactHandler}></ContactCard>
+            <ContactCard contact={contact} clickHandler={deleteContactHandler}> </ContactCard>
         )
     });
+
+    const searchHandler=(searchTerm)=>{
+      if (searchTerm != ""){
+        const newContactList=contacts.filter((contact)=>{
+          return Object.values(contact).join(" ").toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
+        });
+       setSearchResults(newContactList)
+      }
+      else{
+        setSearchResults(contacts);
+      }
+    };
+
     const getSearchTerm=()=>{
-      props.searchKeyword(inputEl.current.value);
+      searchHandler(inputEl.current.value);
     };
 
     return (
