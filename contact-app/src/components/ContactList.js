@@ -2,24 +2,32 @@ import React,{useRef, useContext} from 'react';
 import {Link} from 'react-router-dom';
 import ContactCard from './ContactCard';
 import ContactContext from "../contexts/ContactContext";
+import api from "../api/contact";
 
 const ContactList=(props)=>{
     console.log("props",props);
-    const {contacts, setContacts, searchResults, setSearchResults}  = useContext(ContactContext);
+    const {contacts, setContacts, searchResults, setSearchResults, searchTerm, setSearchTerm}  = useContext(ContactContext);
     console.log("Context contacts => ", contacts);
     const inputEl=useRef("");
 
     const deleteContactHandler=(id)=>{
-        props.getContactId(id)
+      removeContactHandler(id)
     };
 
-    const renderContactList= searchResults.map((contact)=>{
+    let result_contacts = contacts
+    if (searchResults.length > 0) {
+      result_contacts= searchResults
+    }
+
+    const renderContactList = 
+    result_contacts.map((contact)=>{
         return(
             <ContactCard contact={contact} clickHandler={deleteContactHandler}> </ContactCard>
         )
     });
 
     const searchHandler=(searchTerm)=>{
+      setSearchTerm(searchTerm);
       if (searchTerm != ""){
         const newContactList=contacts.filter((contact)=>{
           return Object.values(contact).join(" ").toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
@@ -30,6 +38,16 @@ const ContactList=(props)=>{
         setSearchResults(contacts);
       }
     };
+
+    const removeContactHandler=async(id)=>{
+      await api.delete(`/contacts/${id}`);
+  
+      const newContactList = contacts.filter((contact)=>{
+        return contact.id !== id
+      })
+      setContacts(newContactList)
+    };
+  
 
     const getSearchTerm=()=>{
       searchHandler(inputEl.current.value);
@@ -46,7 +64,7 @@ const ContactList=(props)=>{
           </h2>
           <div className='ui search'>
             <div className='ui icon input'>
-              <input ref={inputEl} type="text" placeholder='Search Contacts' className='prompt' value={props.term} onChange={getSearchTerm}/>
+              <input ref={inputEl} type="text" placeholder='Search Contacts' className='prompt' value={searchTerm} onChange={getSearchTerm}/>
               <i className='search icon'></i>
             </div>
           </div>

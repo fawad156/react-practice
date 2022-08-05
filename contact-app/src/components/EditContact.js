@@ -1,5 +1,8 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import { useNavigate,useLocation } from "react-router-dom";
+import ContactContext from "../contexts/ContactContext";
+import api from "../api/contact";
+import { v4 as uuid } from "uuid";
 
 const EditContact=(props)=>{
     const location = useLocation();
@@ -10,6 +13,8 @@ const EditContact=(props)=>{
     const [update_name, setName]=useState(name);
     const [update_email, setEmail]=useState(email);
 
+    const {contacts, setContacts}  = useContext(ContactContext);
+
     const update=(e)=>{
         e.preventDefault();
         if(update_name === "" || update_email === ""){
@@ -17,11 +22,21 @@ const EditContact=(props)=>{
             return;
         }
         const state={id, name: update_name, email: update_email}
-        props.updateContactHandler(state);
+        updateContactHandler(state);
         setName("")
         setEmail("")
         navigate("/")
     };
+    const updateContactHandler=async(contact)=>{
+        const response = await api.put(`/contacts/${contact.id}`,contact);
+        const {id,name,email} = response.data;
+        setContacts(
+          contacts.map((contact)=>{
+            return contact.id === id ? {...response.data} : contact 
+          })
+        )
+    };
+
     return(
         <div className='ui main'>
             <h2>Add Contact</h2>

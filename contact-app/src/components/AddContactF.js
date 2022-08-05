@@ -1,10 +1,14 @@
-import React,{useState} from 'react';
+import React,{useState, useContext} from 'react';
 import { useNavigate } from "react-router-dom";
+import ContactContext from "../contexts/ContactContext";
+import api from "../api/contact";
+import { v4 as uuid } from "uuid";
 
 const AddContact=(props)=>{
 
     const [name, setName]=useState("");
     const [email, setEmail]=useState("");
+    const {contacts, setContacts}  = useContext(ContactContext);
 
     let navigate = useNavigate();
     const add=(e)=>{
@@ -14,11 +18,20 @@ const AddContact=(props)=>{
             return;
         }
         const state={name, email}
-        props.addContactHandler(state);
+        addContactHandler(state);
         setName("")
         setEmail("")
         console.log("props",props);
         navigate("/")
+    };
+    const addContactHandler = async(contact)=>{
+        console.log(contact);
+        const body={
+          id: uuid(),
+          ...contact
+        };
+        const response = await api.post("/contacts",body)
+        setContacts([...contacts, response.data])
     };
     return(
         <div className='ui main'>
