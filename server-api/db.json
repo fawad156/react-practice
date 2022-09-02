@@ -10,5 +10,29 @@
       "name": "jack",
       "email": "fawad.ahsen@invozone.com"
     }
+  ],
+  "users": [
+    {
+      
+        "id": "e45c8a99-5b01-40ca-b8d0-9f16addc2638",
+        "name": "max lee",
+        "email": "max@invozone.com",
+        "password": "121max"
+    },
+    {
+      "id": "9732f6a4-6dc5-4a80-8d53-30386d8b6022",
+      "name": "jack",
+      "email": "fawad.ahsen@invozone.com",
+      "password": "121jack"
+    }
+  ],
+  "admin": [
+    {
+      
+      "id": "e45c8a99-5b01-40ca-b8d0-9f16acvsdr2638",
+      "name": "fawi",
+      "email": "fawi@invozone.com",
+      "password": "121admin"
+    }
   ]
 }
